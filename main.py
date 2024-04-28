@@ -78,12 +78,10 @@ while True:
                             p_name = input("Please Enter Product Name : ")
                             p_id = int(input("Please Enter Product Id: "))
                             p_price = int(input("Please Enter Total Price : "))
-                            p_quantity = int(input("Please Enter Product Quantity : "))
-                            is_success = shops_customer.Buy_product(product_name=p_name,total_amount=p_price,product_quantity=p_quantity,product_id=p_id)
-                            if is_success == True:
+                            is_success = shops_customer.Buy_product(product_name=p_name,total_amount=p_price,product_id=p_id)
+                            if is_success !=None:
                                 shops_customer.Remove_from_cart(product_id=p_id)
-                                Phitron_shop.Product_list[p_id].quantity-=p_quantity
-                                if Phitron_shop.Product_list[p_id].quantity <=0 :
+                                if is_success.quantity <= 0 :
                                     del Phitron_shop.Product_list[p_id]
                                     print(f"This {p_id} product is deleted.")
                         elif cus_choose==5:

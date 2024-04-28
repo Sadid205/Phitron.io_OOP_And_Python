@@ -4,3 +4,4 @@ class Product:
         self.price = price 
         self.quantity = quantity
         self.product_id  = product_id
+        self.quantity_in_cart = 0

@@ -8,14 +8,17 @@ class Customer(User):
     def Add_to_cart(self,product_id,shop):
         for id,value in self.cart.items():
             if id==product_id:
-                self.cart[id].quantity+=1
-                print(f"Your {value.product_name} product is already exist on the cart and here is the quantity: {self.cart[id].quantity}\n")
-                return
-
+                if value.quantity_in_cart == value.quantity:
+                    print(f"This product is only {value.quantity} pice available in this shop.You can not add more than {value.quantity} pice in your cart.\n")
+                    return
+                else:
+                    self.cart[id].quantity_in_cart+=1
+                    print(f"Your {value.product_name} product is already exist on the cart and here is the quantity: {self.cart[id].quantity_in_cart}\n")
+                    return
         for id,value in shop.Product_list.items():
             if id== product_id:
                 self.cart[id] = value
-                self.cart[id].quantity = 1
+                self.cart[id].quantity_in_cart = 1
                 print(f"Your{value.product_name} product is added on cart!\n")
                 return
         print("This product is not available in this shop!\n")
@@ -28,20 +31,17 @@ class Customer(User):
                 return
         print("This product is not available in this shop !\n")
     
-    def Buy_product(self,product_name,total_amount,product_quantity,product_id):
+    def Buy_product(self,product_name,total_amount,product_id):
         for _,value in self.cart.items():
             if value.product_id==product_id :
-                total_price = product_quantity*value.price
-                if value.quantity < product_quantity:
-                    print(f"The only {value.quantity} Items available\n")
-                    return False
+                total_price = value.quantity_in_cart*value.price
+                if total_amount >= total_price:
+                    print(f"Here is your product: {value.product_name} and your extra money is {total_amount-total_price}\n")
+                    value.quantity-=value.quantity_in_cart
+                    return value
                 else:
-                    if total_amount >= total_price:
-                        print(f"Here is your product: {value.product_name} and your extra money is {total_amount-total_price}\n")
-                        return True
-                    else:
-                        print(f"Please add {total_price-total_amount} money extra !\n")
-                        return False
+                    print(f"Please add {total_price-total_amount} money extra !\n")
+                    return None       
         print(f"This {product_name} product can not found your cart.Here is the product id:{product_id}.Please add this item in your cart.")
 
     def View_products(self,shop):
